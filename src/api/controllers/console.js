@@ -1,4 +1,5 @@
 const Console = require("../models/console");
+const { findById } = require("../models/user");
 const { deleteFile } = require("../utils/deleteFile");
 
 const getConsole = async (req, res, next) => {
@@ -29,6 +30,13 @@ const updateConsole = async (req, res, next) => {
 		const { id } = req.params;
 		const consoleUpdated = new Console(req.body);
 		consoleUpdated._id = id;
+
+		if (req.file) {
+			consoleUpdated.logo = req.file.path;
+			const oldConsole = await Console.findById(id);
+			deleteFile(oldConsole.logo);
+		}
+
 		const update = await Console.findByIdAndUpdate(id, consoleUpdated);
 		return res.status(200).json(update);
 	} catch (error) {

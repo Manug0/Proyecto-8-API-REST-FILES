@@ -28,6 +28,13 @@ const putGames = async (req, res, next) => {
 		const { id } = req.params;
 		const updateGame = new Game(req.body);
 		updateGame._id = id;
+
+		if (req.file) {
+			updateGame.caratula = req.file.path;
+			const oldGame = await Game.findById(id);
+			deleteFile(oldGame.caratula);
+		}
+
 		const update = await Game.findByIdAndUpdate(id, updateGame);
 		return res.status(200).json(update);
 	} catch (error) {

@@ -61,6 +61,13 @@ const updateUser = async (req, res, next) => {
 		const { id } = req.params;
 		const userUpdated = new User(req.body);
 		userUpdated._id = id;
+
+		if (req.file) {
+			userUpdated.avatar = req.file.path;
+			const oldUser = await User.findById(id);
+			deleteFile(oldUser.avatar);
+		}
+
 		const update = await User.findByIdAndUpdate(id, userUpdated);
 		return res.status(200).json(update);
 	} catch (error) {
