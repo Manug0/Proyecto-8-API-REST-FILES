@@ -7,6 +7,7 @@ const consoleSchema = new mongoose.Schema(
 		precio: { type: Number, required: true },
 		capacidad: { type: Number, required: true },
 		logo: { type: String, required: true },
+		juegosCompatibles: [{ type: mongoose.Types.ObjectId, required: false, ref: "games" }],
 	},
 	{
 		collection: "consoles",

@@ -16,7 +16,14 @@ const postGames = async (req, res, next) => {
 		if (req.file) {
 			newGame.caratula = req.file.path;
 		}
+
 		const saveGame = await newGame.save();
+
+		const consoleId = req.body.consoleId;
+		const console = await Console.findById(consoleId);
+		console.juegosCompatibles.push(saveGame._id);
+
+		await console.save();
 		return res.status(201).json(saveGame);
 	} catch (error) {
 		return res.status(400).json(error);

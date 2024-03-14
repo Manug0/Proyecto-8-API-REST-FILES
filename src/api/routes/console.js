@@ -1,13 +1,10 @@
-const uploadConsole = require("../../middlewares/ConsoleFile");
+const uploadFile = require("../../middlewares/uploadFile");
 
-const {
-	getConsole,
-	postConsole,
-	updateConsole,
-	deleteConsole,
-} = require("../controllers/console");
+const { getConsole, postConsole, updateConsole, deleteConsole } = require("../controllers/console");
 
 const consoleRouter = require("express").Router();
+
+const uploadConsole = uploadFile("consoles");
 
 consoleRouter.get("/", getConsole);
 consoleRouter.post("/", uploadConsole.single("logo"), postConsole);

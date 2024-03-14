@@ -4,7 +4,7 @@ const { deleteFile } = require("../utils/deleteFile");
 
 const getConsole = async (req, res, next) => {
 	try {
-		const consoleRead = await Console.find();
+		const consoleRead = await Console.find().populate("juegosCompatibles");
 		return res.status(200).json(consoleRead);
 	} catch (error) {
 		return res.status(400).json(error);
@@ -49,9 +49,7 @@ const deleteConsole = async (req, res, next) => {
 		const { id } = req.params;
 		const consoleDeleted = await Console.findByIdAndDelete(id);
 		deleteFile(consoleDeleted.logo);
-		return res
-			.status(200)
-			.json({ mensaje: "Consola eliminada", consoleDeleted });
+		return res.status(200).json({ mensaje: "Consola eliminada", consoleDeleted });
 	} catch (error) {
 		return res.status(400).json(error);
 	}
